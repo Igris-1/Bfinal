@@ -147,6 +147,7 @@ class ListaEnlazada:
         return self.len
 
 #iterador de lista enlazada (eliminar e insertar son de tiempo constante)
+#no recuerdo cuando hice esto ni por que lo hice
 class IteradorListaEnlazada:
     """Almacena el estado de una iteración sobre la ListaEnlazada."""
     def __init__(self, lista):
