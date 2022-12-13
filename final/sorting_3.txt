@@ -1,0 +1,52 @@
+- Algoritmos de ordenamiento
+
+- MergeSort:
+	-Sin condiciones sobre los datos
+	-Orden temporar: O(n*log(n))
+	-Estable: si
+	-In-Place: no
+
+- QuickSort:
+	-Sin condiciones sobre los datos
+	-Orden temporal: O(n*log(n))
+	-Estable: no
+	-In-Place: si
+
+- Seleccion:
+	-Sin condiciones sobre los datos
+	-Orden temporal: O(n²)
+	-Estable: si
+	-In-Place: si
+
+- CountingSort:
+	-Condiciones sobre los datos:
+		.tengo que poder enumerar los datos
+		.rango acotado de elementos
+	-Orden temporal: O(n + k)
+	-Estable: si
+	-In-Place: no
+
+- BucketSort:
+	-Condiciones sobre los datos:
+		.distribucion conocida de los datos
+		.capacidad de distribuir en buckets de similar cantidad de elementos
+	-Orden temporal: O(n*log(n/b))
+	-Estable: depende
+	-In-Place: no
+
+- RadixSort:
+	-Condiciones sobre los datos:
+		.los elementos tienen varias cifras, o similar
+		.cada cifra se puede ordenar auxiliarmente, linealmente para hacer RadixSort linealmente
+	-Orden temporal: O(d*(algoritmo aux interno))
+	-Estable: si
+	-In-Place: depende
+
+- HeapSort:
+	-Sin condicion sobre los datos
+	-Orden temporal: O(n*log(n))
+	-Estable: no
+	-In-Place: no
+
+
+
