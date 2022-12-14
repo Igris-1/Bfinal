@@ -33,3 +33,29 @@ def bellman_ford(grafo, origen):
 
     dist[origen] = 0
     padre[origen] = None
+    aristas = grafo.obtener_aristas()
+
+    for _ in range(len(grafo)):
+        cambio = None
+        for origen, destino, peso in aristas:
+            if dist.get(origen, 0) + peso < dist.get(destino, 0):
+                cambio = True
+                padre[destino] = origen
+                dist[destino] = dist[origen] + peso
+        # si no hubo cambios en la iteracion, corto
+        if not cambio:
+            break
+    
+    # si no hubo cambios en la iteracion, corto
+    if not cambio:
+        return padre, dist
+    
+    # si hubo cambios en la iteracion, verifico si hay ciclos negativos
+    for v, w, peso in aristas:
+        if dist[v] + peso < dist[w]:
+            return None # hay un ciclo negativo
+    return padre, dist
+
+
+
+
