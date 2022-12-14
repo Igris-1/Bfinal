@@ -103,7 +103,7 @@ def kruskal(grafo):
                 visitados.add(v, w)
                 visitados.add(w, v)
 
-    for a in aristas:
+    while aristas:
         peso, (v, w) = heapq.heappop(aristas)
         # aca evitamos cerrar un ciclo
         if grupos.find(v) == grupos.find(w):
