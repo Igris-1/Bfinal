@@ -113,3 +113,33 @@ def kruskal(grafo):
         grupos.union(v, w)
     return arbol
 
+
+# Puntos de articulación
+def puntos_articulacion(grafo):
+    origen = grafo.obtener_vertices()[0]
+    puntos = set()
+    dfs_puntos(grafo, origen, {origen}, {origen: None}, {}, puntos, True)
+    return puntos
+
+
+def dfs_puntos(grafo, v, visitados, padre, orden, mas_bajo, puntos, es_raiz):
+    hijos = 0
+    mas_bajo[v] = orden[v]
+
+    for w in grafo.adyacentes(v):
+        if w not in visitados:
+            hijos += 1
+            orden[w] = orden[v] + 1
+            padre[w] = v
+            visitados.add(w)
+            dfs_puntos(grafo, w, visitados, padre, orden, mas_bajo, puntos, es_raiz=False)
+
+            if mas_bajo[w] >= orden[v] and not es_raiz:
+                puntos.add(v)
+            mas_bajo[v] = min(mas_bajo[v], orden[w])
+        elif padre[v] != w:
+            mas_bajo[v] = min(mas_bajo[v], orden[w])
+    if es_raiz and hijos > 1:
+        puntos.add(v)
+
+
