@@ -1,5 +1,6 @@
 import heapq
 from resources import grafo
+from resource import union_find as union
 
 # Dijkstra
 def dijkstra(grafo, origen):
@@ -84,5 +85,31 @@ def prim(grafo):
 
         for x in grafo.adyacentes(w):
             if x not in visitados:
-                heapq.heappush(grafo.peso(v,w),(w,x))
+                heapq.heappush(heap,(grafo.peso(v,w),(w,x)))
     return arbol
+
+
+# Kruskal
+def kruskal(grafo):
+    grupos = union.UnionFind(grafo.obtener_vertices())
+    arbol = grafo.Grafo()
+    aristas = []
+    visitados = set()
+
+    for v in grafo.adyacentes(v):
+        for w in grafo.adyacentes(w):
+            if (v,w) not in visitados:
+                heapq.heappush(aristas, (grafo.peso(v, w), (v, w)))
+                visitados.add(v, w)
+                visitados.add(w, v)
+
+    for a in aristas:
+        peso, (v, w) = heapq.heappop(aristas)
+        # aca evitamos cerrar un ciclo
+        if grupos.find(v) == grupos.find(w):
+            continue
+        # agregamos la arista al arbol
+        arbol.agregar_arista(v, w)
+        grupos.union(v, w)
+    return arbol
+
