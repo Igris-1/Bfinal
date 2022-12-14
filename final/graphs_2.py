@@ -1,4 +1,5 @@
 import heapq
+from resources import grafo
 
 # Dijkstra
 def dijkstra(grafo, origen):
@@ -57,5 +58,31 @@ def bellman_ford(grafo, origen):
     return padre, dist
 
 
+# Prim
+def prim(grafo):
+    v = grafo.obtener_vertices()[0]
+    visitados = set()
+    heap = []
 
+    visitados.add(v)
 
+    for w in grafo.adyacentes(v):
+        heapq.heappush(heap,(grafo.peso(v,w), (v,w)))
+
+    arbol = grafo.Grafo()
+    for v in grafo.obtener_vertices():
+        arbol.agregar_vertice(v)
+
+    while heap:
+        peso, (v, w) = heapq.heappop(heap)
+        #aca evitamos cerrar un ciclo
+        if w in visitados:
+            continue
+        #agregamos la arista al arbol
+        arbol.agregar_arista(v, w, peso)
+        visitados.add(w)
+
+        for x in grafo.adyacentes(w):
+            if x not in visitados:
+                heapq.heappush(grafo.peso(v,w),(w,x))
+    return arbol
