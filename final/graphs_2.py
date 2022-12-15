@@ -1,9 +1,64 @@
 import heapq
-from resources import grafo
 from resources import pila
+from resources import cola
+from resources import grafo
 from resource import union_find as union
 
-# Dijkstra
+
+# RECORRIDOS
+
+'''
+Breadth-First Search (BFS):
+    - Complejidad: O(V + E)
+    - Recorrido radial
+    - Es maleable
+'''
+def bfs(grafo):
+    visitados = set()
+    for v in grafo.obtener_vertices():
+        if v not in visitados:
+            _bfs(grafo, v, visitados)
+
+def _bfs(grafo, origen, visitados):
+    cola = cola.Cola()
+    cola.encolar(origen)
+
+    while cola:
+        v = cola.desencolar()
+        for w in grafo.adyacentes(v):
+            if w not in visitados:
+                _bfs(grafo, w, visitados)
+
+
+'''
+Depth-First Search (DFS):
+    - Complejidad: O(V + E)
+    - Recorrido en profundidad
+    - Es maleable
+'''
+def dfs(grafo):
+    visitados = set()
+    for v in grafo.obtener_vertices():
+        if v not in visitados:
+            visitados.add(v)
+            _dfs(grafo, v, visitados)
+
+def _dfs(grafo, v, visitados):
+    for w in grafo.adyacentes(v):
+        if w not in visitados:
+            visitados.add(w)
+            _dfs(grafo, w, visitados)
+
+
+# CAMINOS MINIMOS
+
+'''
+Dijkstra:
+    - Complejidad: O(E log V)
+    - Implementado con un heap de minimos
+    - No sirve para grafos con pesos negativos ya que se genera un ciclo infinito
+    - Si el grafo es conexo, se puede usar para encontrar el camino minimo entre todos los pares de vertices
+'''
 def dijkstra(grafo, origen):
     dist = {}
     padre = {}
@@ -29,16 +84,23 @@ def dijkstra(grafo, origen):
     return padre, dist
 
 
-# Bellman-Ford
+'''
+Bellman-Ford:
+    - Complejidad: O(V*E)
+    - Solo para grafos dirigidos
+    - Es realmente lento, pero sirve para grafos con pesos negativos
+    - Itera V veces + 1
+    - Si se mejora la ultima iteracion quiere decir que hay un ciclo negativo
+'''
 def bellman_ford(grafo, origen):
     dist = {}
     padre = {}
 
     dist[origen] = 0
     padre[origen] = None
-    aristas = grafo.obtener_aristas()
+    aristas = grafo.obtener_aristas() # O(V + E)
 
-    for _ in range(len(grafo)):
+    for _ in range(len(grafo)): # O(V * E)
         cambio = None
         for origen, destino, peso in aristas:
             if dist.get(origen, 0) + peso < dist.get(destino, 0):
@@ -48,11 +110,11 @@ def bellman_ford(grafo, origen):
         # si no hubo cambios en la iteracion, corto
         if not cambio:
             break
-    
+
     # si no hubo cambios en la iteracion, corto
     if not cambio:
         return padre, dist
-    
+
     # si hubo cambios en la iteracion, verifico si hay ciclos negativos
     for v, w, peso in aristas:
         if dist[v] + peso < dist[w]:
@@ -60,7 +122,14 @@ def bellman_ford(grafo, origen):
     return padre, dist
 
 
-# Prim
+# ARBOL DE TENDIDO MINIMO
+
+'''
+Prim:
+    - Complejidad: O(E log(V))
+    - Implementado con un heap de minimos
+    - Devuelve un arbol cuya suma de pesos es minima
+'''
 def prim(grafo):
     v = grafo.obtener_vertices()[0]
     visitados = set()
@@ -77,10 +146,8 @@ def prim(grafo):
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
-        #aca evitamos cerrar un ciclo
-        if w in visitados:
+        if w in visitados: #aca evitamos cerrar un ciclo
             continue
-        #agregamos la arista al arbol
         arbol.agregar_arista(v, w, peso)
         visitados.add(w)
 
@@ -90,7 +157,12 @@ def prim(grafo):
     return arbol
 
 
-# Kruskal
+'''
+Kruskal:
+    - Complejidad: O(E log(V))
+    - Implementado con un heap de minimos
+    - Devuelve un arbol cuya suma de pesos es minima
+'''
 def kruskal(grafo):
     grupos = union.UnionFind(grafo.obtener_vertices())
     arbol = grafo.Grafo()
@@ -106,16 +178,20 @@ def kruskal(grafo):
 
     while aristas:
         peso, (v, w) = heapq.heappop(aristas)
-        # aca evitamos cerrar un ciclo
-        if grupos.find(v) == grupos.find(w):
+        if grupos.find(v) == grupos.find(w): # aca evitamos cerrar un ciclo
             continue
-        # agregamos la arista al arbol
         arbol.agregar_arista(v, w, peso)
         grupos.union(v, w)
     return arbol
 
 
-# Puntos de articulación
+'''
+Puntos de articulacion:
+    - Complejidad: O(V + E)
+    - Devuelve los puntos de articulacion de un grafo
+    - Un punto de articulacion es un vertice que, si se elimina, separa el grafo en dos o mas componentes
+    - Utiliza un recorrido DFS
+'''
 def puntos_articulacion(grafo):
     origen = grafo.obtener_vertices()[0]
     puntos = set()
@@ -136,17 +212,26 @@ def dfs_puntos(grafo, v, visitados, padre, orden, mas_bajo, puntos, es_raiz):
             dfs_puntos(grafo, w, visitados, padre, orden, mas_bajo, puntos, es_raiz=False)
 
             if mas_bajo[w] >= orden[v] and not es_raiz:
+                # No hubo forma de pasar por arriba a este vertice, es punto de articulacion
+                # se podria agregar como condicion "and v not in ptos" (ya que podria darse por mas de una rama)
                 puntos.add(v)
+            # Al volver me quedo con que puedo ir tan arriba como mi hijo, si es que me supera
             mas_bajo[v] = min(mas_bajo[v], orden[w])
 
         elif padre[v] != w:
+            # evitamos considerar la arista con el padre como una de retorno
+            # Si es uno ya visitado, significa que puedo subir (si es que no podia ya ir mas arriba)
             mas_bajo[v] = min(mas_bajo[v], orden[w])
 
     if es_raiz and hijos > 1:
         puntos.add(v)
 
 
-# CFCs
+'''
+Ccomponentes Fuertemente Conexas:
+    - Complejidad: O(V + E)
+    - Devuelve las componentes fuertemente conexas de un grafo dirigido
+'''
 def cfcs(grafo):
     resultado = []
     visitados = set()
@@ -167,9 +252,13 @@ def _cfcs(grafo, v, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_g
         if w not in visitados:
             _cfcs(grafo, w, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_global)
         if w in apilados:
+            # nos tenemos que fijar que este entre los apilados y que no estamos viendo un vertice visitado
+            # en otro dfs hecho antes (no son parte de la misma cfc porque habrian sido visitados en la misma dfs)
             mas_bajo[v] == min(mas_bajo[v], mas_bajo[w])
     
     if orden[v] == mas_bajo[v]:
+        # se cumple condicion de cierre de CFC, armo la cfc
+        # y saco los elementos de la pila
         nueva_cfc = []
         while True:
             w = pila.desapilar()
