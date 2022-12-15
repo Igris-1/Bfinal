@@ -1,5 +1,6 @@
 import heapq
 from resources import grafo
+from resources import pila
 from resource import union_find as union
 
 # Dijkstra
@@ -68,7 +69,7 @@ def prim(grafo):
     visitados.add(v)
 
     for w in grafo.adyacentes(v):
-        heapq.heappush(heap,(grafo.peso(v,w), (v,w)))
+        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
 
     arbol = grafo.Grafo()
     for v in grafo.obtener_vertices():
@@ -137,9 +138,19 @@ def dfs_puntos(grafo, v, visitados, padre, orden, mas_bajo, puntos, es_raiz):
             if mas_bajo[w] >= orden[v] and not es_raiz:
                 puntos.add(v)
             mas_bajo[v] = min(mas_bajo[v], orden[w])
+
         elif padre[v] != w:
             mas_bajo[v] = min(mas_bajo[v], orden[w])
+
     if es_raiz and hijos > 1:
         puntos.add(v)
 
 
+# CFCs
+def cfcs(grafo):
+    resultado = []
+    visitados = set()
+    p = pila.Pila()
+    for v in grafo:
+        if v not in visitados:
+            _cfcs(grafo, v, visitados, {}, {}, )
