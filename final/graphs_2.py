@@ -85,7 +85,7 @@ def prim(grafo):
 
         for x in grafo.adyacentes(w):
             if x not in visitados:
-                heapq.heappush(heap,(grafo.peso(v,w),(w,x)))
+                heapq.heappush(heap, (grafo.peso(v, w), (w, x)))
     return arbol
 
 
