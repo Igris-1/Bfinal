@@ -153,4 +153,28 @@ def cfcs(grafo):
     p = pila.Pila()
     for v in grafo:
         if v not in visitados:
-            _cfcs(grafo, v, visitados, {}, {}, )
+            _cfcs(grafo, v, visitados, {}, {}, p, set(), resultado, 0)
+    return resultado
+
+def _cfcs(grafo, v, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_global):
+    orden[v] = mas_bajo[v] = contador_global[0]
+    contador_global[0] += 1
+    visitados.add(v)
+    pila.apilar(v)
+    apilados.add(v)
+    
+    for w in grafo.adyacentes(v):
+        if w not in visitados:
+            _cfcs(grafo, w, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_global)
+        if w in apilados:
+            mas_bajo[v] == min(mas_bajo[v], mas_bajo[w])
+    
+    if orden[v] == mas_bajo[v]:
+        nueva_cfc = []
+        while True:
+            w = pila.desapilar()
+            apilados.remove(w)
+            nueva_cfc.append(w)
+            if w == v:
+                break
+        cfcs.append(nueva_cfc)
