@@ -50,6 +50,61 @@ def _dfs(grafo, v, visitados):
             _dfs(grafo, w, visitados)
 
 
+# ORDEN TOPOLOGICO
+
+'''
+Orden topologico tipo BFS:
+    - Complejidad: O(V + E)
+    - Utiliza una cola como TDA auxiliar
+    - Recorrido radial que toma en cuenta los grados de entrada
+    - para grafos dirigidos
+'''
+def orden_bfs(grafo):
+    orden = []
+    grados_e = grados_entrada(grafo)
+    cola = cola.Cola()
+
+    for v in grafo.obtener_vertices():
+        if grados_e[v] == 0:
+            cola.encolar(v)
+
+    while cola:
+        v = cola.desencolar()
+        orden.append(v)
+        for w in grafo.adyacentes(v):
+            grados_e[w] -= 1
+            if grados_e[w] == 0:
+                cola.encolar(w)
+
+    if len(orden) != len(grafo.obtener_vertices()):
+        return None
+    return orden
+
+
+'''
+Orden topologico tipo DFS:
+    - Complejidad: O(V + E)
+    - Utiliza una pila como TDA auxiliar
+    - Recorrido en profundidad que toma en cuenta los visitados
+    - para grafos dirigidos
+'''
+def orden_dfs(grafo):
+    visitados = set()
+    pila = pila.Pila()
+    for v in grafo.obtener_vertices():
+        if v not in visitados:
+            visitados.add(v)
+            _orden_dfs(grafo, v, visitados, pila)
+    return pila_a_lista(pila)
+
+
+def _orden_dfs(grafo, v, visitados, pila):
+    for w in grafo.adyacentes(v):
+        if w not in visitados:
+            visitados.add(w)
+            _orden_dfs(grafo, w, visitados, pila)
+    pila.apilar(v)
+
 # CAMINOS MINIMOS
 
 '''
@@ -267,3 +322,18 @@ def _cfcs(grafo, v, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_g
             if w == v:
                 break
         cfcs.append(nueva_cfc)
+
+
+# ALGORITMOS AUXILIARES
+def grados_entrada(grafo):
+    grados = {}
+    for v in grafo.obtener_vertices():
+        for w in grafo.adyacentes(v):
+            grados[w] = grados.get(w, 0) + 1
+    return grados
+
+def pila_a_lista(pila):
+    lista = []
+    while pila:
+        lista.append(pila.desapilar())
+    return lista
