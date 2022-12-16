@@ -1,8 +1,8 @@
-import heapq
+from resource import union_find as union
 from resources import pila
 from resources import cola
 from resources import grafo
-from resource import union_find as union
+import heapq
 
 
 # RECORRIDOS
