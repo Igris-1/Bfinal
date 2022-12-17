@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // las estrellitas demarcan la dificultad de los ejercicios,
 // 4 y 5 estrellas son ejercicios de parciales / finales
 
@@ -16,6 +14,42 @@ DATOS: D&C Rules
 		- logB(A) < C => T(n) = O(n^C)
 		- logB(A) = C => T(n) = O(n^C * log(n))
 		- logB(A) > C => T(n) = O(n^logB(A))
+*/
+
+/*
+10) (★★) Implementar, por división y conquista, una función que dado
+un arreglo sin elementos repetidos y casi ordenado
+(todos los elementos se encuentran ordenados, salvo uno),
+obtenga el elemento fuera de lugar. Indicar y justificar el orden.
+*/
+func fueraDeLugar(arr []int) int {
+	return _fueraDeLugar(arr, 0, len(arr)-1)
+}
+
+func _fueraDeLugar(arr []int, inicio, fin int) int {
+	if inicio == fin {
+		return -1
+	}
+	if inicio+1 == fin && arr[inicio] > arr[fin] {
+		return arr[fin]
+	}
+	medio := (inicio + fin) / 2
+	if medio >= 1 {
+		if arr[medio] > arr[medio+1] && arr[medio] > arr[medio-1] {
+			return arr[medio+1]
+		} else if arr[medio] < arr[medio-1] {
+			return arr[medio-1]
+		}
+	}
+	return _fueraDeLugar(arr, inicio, medio-1) + _fueraDeLugar(arr, medio+1, fin)
+}
+
+/*
+Complejidad: T(n) = 2T(n/2) + O(n^C)
+	- A: 2
+	- B: 2
+	- C: 0
+	- logB(A) = log2(2) = 1 > C => O(n^logB(A)) = O(n)
 */
 
 /*
@@ -165,8 +199,88 @@ Complejidad: T(n) = 2T(n/2) + O(n^C)
 	- logB(A) = log2(2) = 1 > C => O(n^logB(A)) = O(n)
 */
 
+/*
+19) (★★★★) Dado un arrego de numeros enteros, implementar una
+func ceros(vector []int) int que retorne la cantidad de numeros 0
+en el vector utilizando la téctnica de "División y conquista". El vector
+únicamente contiene los números 1s y 0s. El vector inicialmente tiene solamente
+1s seguidos por únicamente 0s, por ejemplo: [1,1,1,1,0,0,0]
+¿Cual es el orden del algoritmo? Justificar utilizando el Teorema Maestro
+*/
+
+func ceros(vector []int) int {
+	return _ceros(vector, 0, len(vector)-1)
+}
+
+func _ceros(vector []int, inicio, fin int) int {
+	if inicio == fin {
+		return len(vector) - inicio
+	}
+	medio := (inicio + fin) / 2
+	if vector[medio] == 0 {
+		if vector[medio-1] == 1 {
+			return len(vector) - medio
+		} else {
+			return _ceros(vector, inicio, medio-1)
+		}
+	} else {
+		return _ceros(vector, medio+1, fin)
+	}
+}
+
+/*
+Complejidad: T(n) = 1T(n/2) + O(n^C)
+	- A: 1
+	- B: 2
+	- C: 0
+	- logB(A) = log2(1) = 0 = C => O(n^C * log(n)) = O(log(n))
+*/
+
+/*
+20) (★★★) Dado un arreglo desordenado de numeross enteros devolver
+el indice del primer 0 en el arreglo, ej: [1,2,0,4,3,0] -> indice: 2
+*/
+func indice2(arr []int) int {
+	indice, bool := _indice2(arr, 0, len(arr)-1)
+	if bool {
+		return indice
+	}
+	return -1
+}
+
+func _indice2(arr []int, inicio, fin int) (int, bool) {
+	if inicio == fin {
+		if arr[inicio] == 0 {
+			return inicio, true
+		} else {
+			return inicio, false
+		}
+	}
+	medio := (inicio + fin) / 2
+	izq, bool1 := _indice2(arr, inicio, medio)
+	der, bool2 := _indice2(arr, medio+1, fin)
+	if bool1 && bool2 {
+		if izq < der {
+			return izq, bool1
+		}
+	}
+	if bool1 {
+		return izq, bool1
+	} else if bool2 {
+		return der, bool2
+	}
+	return -1, false
+}
+/*
+Complejidad: T(n) = 2T(n/2) + O(n^C)
+	- A: 2
+	- B: 2
+	- C: 0
+	- logB(A) = log2(2) = 1 > C => O(n^logB(A)) = O(n)
+*/
+
 func main() {
 	// funcion de testeo
-	arr := []string{"a1", "a2", "a3", "a4", "c1", "c2", "c3", "c4"}
-	fmt.Println(reordenar(arr))
+	arr := []int{1, 1, 1, 1, 1, 1, 0, 1}
+	println(indice2(arr))
 }
