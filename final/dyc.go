@@ -167,6 +167,52 @@ Complejidad: T(n) = 1T(n/2) + O(n^C)
 */
 
 /*
+17) (★★★★★) Implementar una función (que utilice división y conquista) de orden
+O(n*log(n)) que dado un arreglo de n números enteros devuelva true
+o false según si existe algún elemento que aparezca más de la mitad de las veces.
+Justificar el orden de la solución. Ejemplos:
+
+	[1, 2, 1, 2, 3]		-> false
+	[1, 1, 2, 3]		-> false
+	[1, 2, 3, 1, 1, 1] 	-> true
+	[1] 				-> true
+*/
+
+func mdm(arr []int) bool {
+	cand := _mdm(arr, 0, len(arr)-1)
+	cont := 0
+	for i := 0; i < len(arr); i++ {
+		if arr[i] == cand {
+			cont++
+		}
+	}
+	return cont > len(arr)/2
+}
+
+func _mdm(arr []int, inicio, fin int) int {
+	if inicio == fin {
+		return arr[inicio]
+	}
+	medio := (inicio + fin) / 2
+	cand1 := _mdm(arr, inicio, medio)
+	cand2 := _mdm(arr, medio+1, fin)
+
+	cont1, cont2 := 0, 0
+	for i := inicio; i < fin; i++ {
+		if arr[i] == cand1 {
+			cont1++
+		} else if arr[i] == cand2 {
+			cont2++
+		}
+	}
+	if cont1 > cont2 {
+		return cand1
+	} else {
+		return cand2
+	}
+}
+
+/*
 18) (★★★★★) Tenemos un arreglo de tamaño 2n de la forma {C1, C2, C3, … Cn, D1, D2, D3, … Dn},
 tal que la cantidad total de elementos del arreglo es potencia de 2 (por ende, n también lo es).
 Implementar un algoritmo de División y Conquista que modifique el arreglo de tal
@@ -271,6 +317,7 @@ func _indice2(arr []int, inicio, fin int) (int, bool) {
 	}
 	return -1, false
 }
+
 /*
 Complejidad: T(n) = 2T(n/2) + O(n^C)
 	- A: 2
@@ -281,6 +328,6 @@ Complejidad: T(n) = 2T(n/2) + O(n^C)
 
 func main() {
 	// funcion de testeo
-	arr := []int{1, 1, 1, 1, 1, 1, 0, 1}
-	println(indice2(arr))
+	arr := []int{1, 2, 3, 1, 1, 1}
+	println(mdm(arr))
 }

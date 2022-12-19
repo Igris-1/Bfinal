@@ -1,29 +1,44 @@
 class Grafo:
     def __init__(self, dirigido=False):
+        '''DOC: Representa un grafo no dirigido y con aristas 
+        de peso 1 por default, implementado con lista de
+        vertices y un diccionario de adyacencia'''
         self.dirigido = dirigido
         self.vertices = []
         self.adyacente = {}
 
     def agregar_vertice(self, v):
+        '''DOC: Agrega un vertice a la lista de vertices
+         y lo inicializa en el diccionario de adyacencia'''
         if v not in self.vertices:
             self.vertices.append(v)
             self.adyacente[v] = {}
 
     def obtener_vertices(self):
+        '''DOC: Devuelve una lista de todos los vertices
+        presentes en el grafo'''
         return self.vertices
 
     def adyacentes(self, v):
+        '''DOC: Devuelve una lista de adyacencia a un vertice
+        PRE: Recibe un vertice valido
+        POST: devuelve una lista de adyacencia'''
         return list(self.adyacente[v])
 
     def agregar_arista(self, v, w, peso=1):
+        '''DOC: Agrega una arista no dirigida y de peso 1 por default'''
         self.adyacente[v][w] = peso
         if not self.dirigido:
             self.adyacente[w][v] = peso
 
     def es_arista(self, v, w):
+        '''DOC: Devuelve un tipo de dato bool si "w" es adyacentes a "v"'''
         return w in self.adyacente[v]
 
     def peso(self, v, w):
+        '''DOC: Devuelve el peso de la arista de "v" a "w"
+        PRE: Recibe dos vertices validos
+        POST: Devuelve el peso de la arista'''
         if self.es_arista(v, w):
             return self.adyacente[v][w]
 
