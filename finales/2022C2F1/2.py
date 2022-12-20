@@ -45,7 +45,7 @@ def ciclo_impar(padre, inicio, fin):
 
 
 '''
-Mismo algoritmo pero implementado con un bfs
+Mismo algoritmo pero implementado con un BFS
 '''
 
 
