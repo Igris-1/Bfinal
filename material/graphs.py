@@ -16,15 +16,15 @@ Breadth-First Search (BFS):
 
 
 def bfs(grafo):
-    visitados = set()
+    visitados = {}
     for v in grafo.obtener_vertices():
         if v not in visitados:
-            _bfs(grafo, v, {})
+            _bfs(grafo, v, visitados)
 
 
-def _bfs(grafo, origen, visitados):
+def _bfs(grafo, v, visitados):
     cola = cola.Cola()
-    cola.encolar(origen)
+    cola.encolar(v)
 
     while cola:
         v = cola.desencolar()
