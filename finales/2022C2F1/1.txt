@@ -1,0 +1,24 @@
+1. Responder las siguientes preguntas, justificado adecuadamente:
+	a. ¿Cuándo conviene utilizar como implementación de un diccionario un Hash, y cuándo un ABB?
+	b. ¿Cómo podría pasar que Obtener en un hash sea peor que O(1)? ¿cómo se puede resolver?
+	c. ¿Cómo podría pasar que Obtener en un ABB sea peor que O(log (n))? ¿cómo se puede resolver?
+
+a. Se conviene untilizar un hash cuando se quiere acceder a los datos en O(1) 
+	sin depender del ordenamiento de los elementos, mientras que un ABB es 
+	conveniente cuando se quiere acceder a los datos en O(log(n)) y se quiere 
+	mantener el ordenamiento de los elementos.
+
+b. Hay varios casos y depende del tipo de hash que se utilice:
+	- 1. Cuando la funcion de hash es muy mala, se crean demasiadas colisiones,
+	-	 entonces la complejidad de buscar/guardar/borrar se vuelve lineal O(n).
+	
+	- 2. El no redimensionar tomando en cuenta los borrados, al menos en un hash
+	-	 cerrado, se acumularian los borrados y la complejidad de buscar/guardar/borrar
+	-	 se vuelve lineal O(n).
+	
+c. Pasaria cuando el arbol no esta balanceado:
+	- 1. ej, guardar una serie de elementos de forma ordenada, quedaria una sola rama
+	- y buscar/guardar/borrar seria O(n).
+
+	- 2. Se solucionaria haciendo rotaciones al guardar/borrar para mantener
+	- balanceado el arbol.
