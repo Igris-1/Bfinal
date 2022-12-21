@@ -1,0 +1,31 @@
+1. Se quiere implementar una búsqueda similar a la Búsqueda Binaria: la Búsqueda Ternaria. 
+	Esta, en vez de partir el arreglo en 2, parte el arreglo en 3 tercios. Verifica si el 
+	elemento buscado está en la posición del primer tercio, así como también en la posición 
+	del segundo tercio (en vez de únicamente en la mitad, como hace Búsqueda binaria). Cuando 
+	no se trata de ninguno de estos, llama recursivamente para el segmento que corresponda 
+	(el primer tercio, segundo o tercero, según cómo sea el elemento buscado respecto al 
+		elemento del primer tercio y del segundo).
+	
+a. Determinar y justificar el orden de la Búsqueda Ternaria.
+
+b. Si en vez de dividir en 3 partes, ahora decidiéramos dividir en n partes 
+   (siendo n el tamaño de arreglo), 
+   ¿cuál sería la complejidad del algoritmo? 
+   ¿A qué algoritmo se asemeja dicha implementación?
+
+c. Dado los resultados anteriores, 
+   ¿tiene sentido implementar la búsqueda K-aria, para k > 2? Justificar.
+
+a. Por teorema maestro T(n) = AT(n/B) + O(n^C):
+	- A: 1
+	- B: 3
+	- C: 0
+	- T(n) = 1T(n/3) + O(n^0)
+	- logB(A) = log3(1) = 0 = C => O(n^C * log(n)) = O(log(n))
+	- la busqueda sigue siendo logaritmica
+
+b. La complejidad en ese caso seria O(n) lineal y se asemejaria
+   a un for loop, ya que se recorre todo el arreglo el elemento
+
+c. No tiene sentido implementar la busqueda K-aria para k > 2 o 3, ya que la
+   la complejidad empeoraria y dejaria de ser logaritmica

@@ -1,0 +1,21 @@
+3. Carlos es nuevo en la empresa en la que trabajan Alan y Bárbara. 
+Alan va a ser el mentor de Carlos, quien debe implementar un nuevo TDA Gatito. 
+Alan, revisando el trabajo que hizo Carlos, nota que este agregó una primitiva
+Redimensionar, pública en la interfaz Gatito, para que la use Bárbara. 
+Alan lo increpa a Carlos, preguntando para qué es dicha primitiva, y este le contesta 
+“Tal como dice la documentación, es para que Bárbara me diga cómo redimensionar
+el arreglo de pelos que tiene el gatito”. 
+Alan, que conoce bien el temperamento de Bárbara, decide evitar que echen a
+Carlos en su segunda semana de trabajo. En este ejercicio, te toca hacer de Alan.
+
+Escribir una explicación de por qué esto que está haciendo Carlos está mal. 
+Considerá que Carlos es muy testarudo (incluso, a pesar de su propio bien), 
+así que tu argumentación deberá ser muy clara y contundente.
+
+Solucion:
+	- Al realizar un TDA hay que tomar en cuenta ciertas cuestiones,
+	- Barbara no tiene por que saber nada respecto a la estructura interna
+	- del TDA, ella solo quiere utilizar el TDA y que funciones correctamente,
+	- Carlos al implementar una primitiva 'Redimensionar' esta  exponiendo 
+	- parte de la estructura interna y dejandole el trabajo de redimensionar a
+	- Barbara, cuando esto deberia ocurrir de forma automatica cuando sea necesario
