@@ -25,7 +25,7 @@ a. Por teorema maestro T(n) = AT(n/B) + O(n^C):
 	- la busqueda sigue siendo logaritmica
 
 b. La complejidad en ese caso seria O(n) lineal y se asemejaria
-   a un for loop, ya que se recorre todo el arreglo el elemento
+   a un for loop, ya que se recorre todo el arreglo
 
 c. No tiene sentido implementar la busqueda K-aria para k > 2 o 3, ya que la
    la complejidad empeoraria y dejaria de ser logaritmica
