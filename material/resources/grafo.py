@@ -14,10 +14,10 @@ class Grafo:
             self.vertices.append(v)
             self.adyacente[v] = {}
 
-    def obtener_vertices(self):
-        '''DOC: Devuelve una lista de todos los vertices
-        presentes en el grafo'''
-        return self.vertices
+    # def obtener_vertices(self):
+    #     '''DOC: Devuelve una lista de todos los vertices
+    #     presentes en el grafo'''
+    #     return self.vertices
 
     def adyacentes(self, v):
         '''DOC: Devuelve una lista de adyacencia a un vertice
@@ -42,15 +42,20 @@ class Grafo:
         if self.es_arista(v, w):
             return self.adyacente[v][w]
 
+    def __iter__(self):
+        '''DOC: Devuelve un iterador de los vertices'''
+        return iter(self.vertices)
+
     def __str__(self):
+        '''DOC: Devuelve una representacion en string del grafo'''
         return str(self.lista_adyacencia)
 
     def __repr__(self):
         return str(self.lista_adyacencia)
 
     def __len__(self):
+        '''DOC: Devuelve la cantidad de vertices del grafo'''
         return len(self.lista_vertices)
-
 
 
 visual_cortex = [
