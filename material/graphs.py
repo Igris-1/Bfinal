@@ -1,7 +1,4 @@
-from resource import union_find as union
-from resources import pila
-from resources import cola
-from resources import grafo
+from resource import union_find as union, pila, cola
 import heapq
 
 
@@ -15,23 +12,38 @@ Breadth-First Search (BFS):
 '''
 
 
-def bfs(grafo):
+def bfs0(grafo):
+    """Recorre todas las componentes conexas del grafo"""
     visitados = {}
-    for v in grafo.obtener_vertices():
+    for v in grafo:
         if v not in visitados:
-            _bfs(grafo, v, visitados)
+            _bfs0(grafo, v, visitados)
 
 
-def _bfs(grafo, v, visitados):
+def _bfs0(grafo, v, visitados):
     cola = cola.Cola()
     cola.encolar(v)
 
-    while cola:
+    while not cola.esta_vacia():
         v = cola.desencolar()
         for w in grafo.adyacentes(v):
             if w not in visitados:
-                visitados[v] = True
                 cola.encolar(w)
+        visitados[v] = True
+
+
+def bfs1(grafo, v):
+    """Recorre una sola componente conexa del grafo"""
+    visitados = {}
+    cola = cola.Cola()
+    cola.encolar(v)
+
+    while not cola.esta_vacia():
+        v = cola.desencolar()
+        for w in grafo.adyacentes(v):
+            if w not in visitados:
+                cola.encolar(w)
+        visitados[v] = True
 
 
 '''
@@ -42,9 +54,10 @@ Depth-First Search (DFS):
 '''
 
 
-def dfs(grafo):
+def dfs0(grafo):
+    """Recorre todas las componentes conexas del grafo"""
     visitados = set()
-    for v in grafo.obtener_vertices():
+    for v in grafo:
         if v not in visitados:
             visitados.add(v)
             _dfs(grafo, v, visitados)
@@ -57,7 +70,18 @@ def _dfs(grafo, v, visitados):
             _dfs(grafo, w, visitados)
 
 
+def dfs1(grafo):
+    """Recorre una sola componente conexa del grafo"""
+    visitados = set()
+    v = grafo.vertice_aleatorio()
+    visitados.add(v)
+    for w in grafo.adyacentes(v):
+        if w not in visitados:
+            visitados.add(w)
+            _dfs(grafo, w, visitados)
+
 # ORDEN TOPOLOGICO
+
 
 '''
 Orden topologico tipo BFS:
@@ -73,11 +97,11 @@ def orden_bfs(grafo):
     grados_e = grados_entrada(grafo)
     cola = cola.Cola()
 
-    for v in grafo.obtener_vertices():
+    for v in grafo:
         if grados_e[v] == 0:
             cola.encolar(v)
 
-    while cola:
+    while not cola.esta_vacia():
         v = cola.desencolar()
         orden.append(v)
         for w in grafo.adyacentes(v):
@@ -204,7 +228,7 @@ Prim:
 
 
 def prim(grafo):
-    v = grafo.obtener_vertices()[0]
+    v = grafo.vertice_aleatorio()
     visitados = set()
     heap = []
 

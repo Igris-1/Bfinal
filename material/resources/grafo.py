@@ -1,3 +1,5 @@
+import random
+
 class Grafo:
     def __init__(self, dirigido=False):
         '''DOC: Representa un grafo no dirigido y con aristas 
@@ -14,10 +16,9 @@ class Grafo:
             self.vertices.append(v)
             self.adyacente[v] = {}
 
-    # def obtener_vertices(self):
-    #     '''DOC: Devuelve una lista de todos los vertices
-    #     presentes en el grafo'''
-    #     return self.vertices
+    def vertice_aleratorio(self):
+        '''DOC: Devuelve un vertice aleratorio'''
+        return random.choice(self.vertices)
 
     def adyacentes(self, v):
         '''DOC: Devuelve una lista de adyacencia a un vertice
