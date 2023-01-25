@@ -225,24 +225,74 @@ Pista: Pensar primero cómo habría que hacer si el arreglo tuviera 4 elementos
 etc… para encontrar el patrón.
 */
 
-func reordenar(arr []string) []string {
-	if len(arr) == 2 {
-		return arr
+func merge(arr []int, start, mid, end int) {
+	// Calcula el tamaño de los arreglos C y D
+	sizeC := mid - start + 1
+	sizeD := end - mid
+
+	// Crea los arreglos C y D
+	C := make([]int, sizeC)
+	D := make([]int, sizeD)
+
+	// Copia los elementos del arreglo original a los arreglos C y D
+	copy(C, arr[start:mid+1])
+	copy(D, arr[mid+1:end+1])
+
+	// Variables de índice para los arreglos C y D
+	i := 0
+	j := 0
+
+	// Variables de índice para el arreglo original
+	k := start
+
+	// Itera sobre los arreglos C y D
+	for i < sizeC && j < sizeD {
+		if C[i] <= D[j] {
+			arr[k] = C[i]
+			i++
+		} else {
+			arr[k] = D[j]
+			j++
+		}
+		k++
 	}
-	izq := reordenar(arr[:len(arr)/2])
-	der := reordenar(arr[len(arr)/2:])
-	for i := 0; i < len(arr)/2; i += 2 {
-		izq[i+1], der[i] = der[i], izq[i+1]
+
+	// Copia los elementos restantes de C al arreglo original
+	for i < sizeC {
+		arr[k] = C[i]
+		i++
+		k++
 	}
-	return arr
+
+	// Copia los elementos restantes de D al arreglo original
+	for j < sizeD {
+		arr[k] = D[j]
+		j++
+		k++
+	}
+}
+
+func divideAndConquer(arr []int, start, end int) {
+	if start < end {
+		// Calcula el punto medio del arreglo
+		mid := (start + end) / 2
+
+		// Divide y conquista el primer y segundo subarreglo
+		divideAndConquer(arr, start, mid)
+		divideAndConquer(arr, mid+1, end)
+
+		// Mezcla los subarreglos
+		merge(arr, start, mid, end)
+	}
 }
 
 /*
-Complejidad: T(n) = 2T(n/2) + O(n^C)
+Complejidad:
+	T(n) = 2T(n/2) + O(n)
 	- A: 2
 	- B: 2
-	- C: 0
-	- logB(A) = log2(2) = 1 > C => O(n^logB(A)) = O(n)
+	- C: 1
+	logB(A) = log2(2) = 1 = C => T(n) = O(n*log(n))
 */
 
 /*
@@ -325,9 +375,3 @@ Complejidad: T(n) = 2T(n/2) + O(n^C)
 	- C: 0
 	- logB(A) = log2(2) = 1 > C => O(n^logB(A)) = O(n)
 */
-
-func main() {
-	// funcion de testeo
-	arr := []int{1, 2, 3, 1, 1, 1}
-	println(mdm(arr))
-}
