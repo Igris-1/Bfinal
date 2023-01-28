@@ -167,9 +167,9 @@ def dijkstra(grafo, origen):
         # if v == destino:
         #    return padre, dist
         for w in grafo.adyacentes():
-            distacia_por_v = dist.get(v, 0) + grafo.peso(v, w)
-            if distacia_por_v < dist.get(w, 0):
-                dist[w] = distacia_por_v
+            dist_por_v = dist[v] + grafo.peso(v, w)
+            if dist_por_v < dist.get(w, float('inf')):
+                dist[w] = dist_por_v
                 padre[w] = v
                 heapq.heappush(heap, (dist[w], w))
     # si tuviera un destino pasado como parametro y no lo encontre
