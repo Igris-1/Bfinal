@@ -33,7 +33,8 @@ def _bfs0(grafo, v, visitados):
 
 
 def bfs1(grafo, v):
-    """Recorre una sola componente conexa del grafo"""
+    """DOC: Recorre una sola componente conexa del grafo, desde
+    un vertice origen"""
     visitados = {}
     cola = cola.Cola()
     cola.encolar(v)
@@ -71,7 +72,8 @@ def _dfs(grafo, v, visitados):
 
 
 def dfs1(grafo):
-    """Recorre una sola componente conexa del grafo"""
+    """DOC: Recorre una sola componente conexa del grafo desde
+    un vertice aleatorio"""
     visitados = set()
     v = grafo.vertice_aleatorio()
     visitados.add(v)
@@ -145,7 +147,7 @@ def _orden_dfs(grafo, v, visitados, pila):
 
 '''
 Dijkstra:
-    - Complejidad: O(E log V)
+    - Complejidad: O(E*log(V))
     - Implementado con un heap de minimos
     - No sirve para grafos con pesos negativos ya que se genera un ciclo infinito
     - Si el grafo es conexo, se puede usar para encontrar el camino minimo entre todos los pares de vertices
@@ -166,7 +168,7 @@ def dijkstra(grafo, origen):
         # si tuviera un destino pasado como parametro
         # if v == destino:
         #    return padre, dist
-        for w in grafo.adyacentes():
+        for w in grafo.adyacentes(v):
             dist_por_v = dist[v] + grafo.peso(v, w)
             if dist_por_v < dist.get(w, float('inf')):
                 dist[w] = dist_por_v
@@ -180,9 +182,9 @@ def dijkstra(grafo, origen):
 '''
 Bellman-Ford:
     - Complejidad: O(V*E)
-    - Solo para grafos dirigidos
+    - Solo para grafos dirigidos (sirve en grafos no dirigidos pero en esos casos hay soluciones mas eficientes)
     - Es realmente lento, pero sirve para grafos con pesos negativos
-    - Itera V veces + 1
+    - Itera V + 1 veces
     - Si se mejora la ultima iteracion quiere decir que hay un ciclo negativo
 '''
 
@@ -193,7 +195,7 @@ def bellman_ford(grafo, origen):
 
     dist[origen] = 0
     padre[origen] = None
-    aristas = grafo.obtener_aristas()  # O(V + E)
+    aristas = grafo.obtener_aristas(grafo)  # O(V + E)
 
     for _ in range(len(grafo)):  # O(V * E)
         cambio = None
@@ -389,3 +391,11 @@ def pila_a_lista(pila):
     while pila:
         lista.append(pila.desapilar())
     return lista
+
+
+def obtener_aristas(grafo):
+    aristas = []
+    for v in grafo:
+        for w in grafo.adyacentes(v):
+            aristas.append((v, w, grafo.peso(v, w)))
+    return aristas
