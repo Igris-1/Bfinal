@@ -1,4 +1,4 @@
-package ejercicio5
+package ejercicio
 
 import (
 	hash "material/resources/hash"
