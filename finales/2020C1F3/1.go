@@ -20,3 +20,5 @@ func KmaxSum(arr []int, k int) []int {
 }
 
 func funcionDeComparacion(a, b int) int { return a - b }
+
+/*Heapify del arr O()*/
