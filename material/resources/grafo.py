@@ -2,7 +2,7 @@ import random
 
 class Grafo:
     def __init__(self, dirigido=False):
-        '''DOC: Representa un grafo no dirigido y con aristas 
+        '''DOC: Representa un grafo no dirigido con aristas
         de peso 1 por default, implementado con lista de
         vertices y un diccionario de adyacencia'''
         self.dirigido = dirigido
