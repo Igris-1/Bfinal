@@ -250,7 +250,7 @@ def prim(grafo):
 
         for x in grafo.adyacentes(w):
             if x not in visitados:
-                heapq.heappush(heap, (grafo.peso(v, w), (w, x)))
+                heapq.heappush(heap, (grafo.peso(w, x), (w, x)))
     return arbol
 
 
@@ -265,18 +265,18 @@ Kruskal:
 def kruskal(grafo):
     grupos = union.UnionFind(grafo.obtener_vertices())
     arbol = grafo.Grafo()
-    aristas = []
+    heap = []
     visitados = set()
 
-    for v in grafo.adyacentes(v):
+    for v in grafo:
         for w in grafo.adyacentes(w):
             if (v, w) not in visitados:
-                heapq.heappush(aristas, (grafo.peso(v, w), (v, w)))
+                heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
                 visitados.add(v, w)
                 visitados.add(w, v)
 
-    while aristas:
-        peso, (v, w) = heapq.heappop(aristas)
+    while heap:
+        peso, (v, w) = heapq.heappop(heap)
         if grupos.find(v) == grupos.find(w):  # aca evitamos cerrar un ciclo
             continue
         arbol.agregar_arista(v, w, peso)

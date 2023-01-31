@@ -23,6 +23,10 @@ class Grafo:
         POST: devuelve una lista de adyacencia'''
         return list(self.vertices[v])
 
+    def obtener_vertices(self):
+        '''DOC: Devuelve una lista de vertices'''
+        return self.vertices.keys()
+
     def agregar_arista(self, v, w, peso=1):
         '''DOC: Agrega una arista no dirigida de peso 1 por default'''
         self.vertice[v][w] = peso
