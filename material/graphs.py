@@ -269,7 +269,7 @@ def kruskal(grafo):
     visitados = set()
 
     for v in grafo:
-        for w in grafo.adyacentes(w):
+        for w in grafo.adyacentes(v):
             if (v, w) not in visitados:
                 heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
                 visitados.add(v, w)

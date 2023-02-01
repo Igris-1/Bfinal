@@ -1,5 +1,6 @@
 import random
 
+
 class Grafo:
     def __init__(self, dirigido=False):
         '''DOC: Representa un grafo no dirigido con aristas
@@ -29,9 +30,9 @@ class Grafo:
 
     def agregar_arista(self, v, w, peso=1):
         '''DOC: Agrega una arista no dirigida de peso 1 por default'''
-        self.vertice[v][w] = peso
+        self.vertices[v][w] = peso
         if not self.dirigido:
-            self.vertice[w][v] = peso
+            self.vertices[w][v] = peso
 
     def es_arista(self, v, w):
         '''DOC: Devuelve un tipo de dato bool si "w" es adyacente a "v"'''
@@ -42,7 +43,7 @@ class Grafo:
         PRE: Recibe dos vertices validos
         POST: Devuelve el peso de la arista'''
         if self.es_arista(v, w):
-            return self.adyacente[v][w]
+            return self.vertices[v][w]
 
     def __iter__(self):
         '''DOC: Devuelve un iterador de los vertices'''
