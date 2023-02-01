@@ -21,4 +21,8 @@ func KmaxSum(arr []int, k int) []int {
 
 func funcionDeComparacion(a, b int) int { return a - b }
 
-/*Heapify del arr O()*/
+/*Heapify del arr O(n)
+el for O(n)
+desencolar del heap O(log(n))
+
+Complejidad final: O(k*log(n))*/
