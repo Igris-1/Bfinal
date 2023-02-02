@@ -7,23 +7,26 @@ import "strconv"
 determine cuál es el número más grande que se puede formar con dichos dígitos.
 */
 
-func seleccion(arr []int) int {
+func countingSort(arr []int) int {
+	count := make([]int, 10)
+	out := make([]int, len(arr))
 	for i := 0; i < len(arr); i++ {
-		max := i
-		for j := i + 1; j < len(arr); j++ {
-			if arr[j] > arr[max] {
-				max = j
-			}
-		}
-		arr[i], arr[max] = arr[max], arr[i]
+		count[arr[i]]++
 	}
-	return arreglo_a_numero(arr)
+	for i := 1; i < len(count); i++ {
+		count[i] += count[i-1]
+	}
+	for i := len(arr) - 1; i >= 0; i-- {
+		out[count[arr[i]]-1] = arr[i]
+		count[arr[i]]--
+	}
+	return arreglo_a_numero(out)
 }
 
 func arreglo_a_numero(arr []int) int {
 	var num string
-	for _, v := range arr {
-		num += strconv.Itoa(v)
+	for i := len(arr) - 1; i >= 0; i-- {
+		num += strconv.Itoa(arr[i])
 	}
 	num2, _ := strconv.Atoi(num)
 	return num2
