@@ -1,0 +1,21 @@
+Responder, justificando cada respuesta:
+    a. Quiero ordenar un arreglo de n personas (estructura), por D.N.I. (cadena dentro de la estructura). ¿Lo mejor que
+    puedo hacer es aplicar MergeSort?
+
+    b. Quiero ordenar un arreglo de n números enteros. Sabiendo que los números están en el rango [1, 1000], ¿cómo
+    puedo utilizar esa información para que Mergesort funcione más rápido? ¿o bien qué otra información sería útil?
+
+    c. ¿Cuál sería el problema de no conocer la distribución de los datos para aplicar BucketSort?
+
+a)  Si tuvieramos mas informacion sobre los DNIs podriamos hacer uso de un algoritmo de ordenamiento
+    no comparativo como RadixSort con CountingSort, pero dada la falta de informacion sobre el rango
+    de los DNIs, no se puede, entonces si, MergeSort es una posible solucion, pero no la unica,
+    cualquier otro algoritmo de ordenamiento comparativo de complejidad O(n log n) es valido.
+
+b)  No se puede hacer mas eficiente MergeSort, al ser un algoritmo de ordenamiento comparativo
+    su mejor complejidad siempre va a ser O(n*log(n)) y no se puede mejorar, en todo caso
+    con la info del enunciado usaria una algoritmo de ordenamiento no comparativo como
+    CountingSort
+
+c)  El problema seria la distribucion de la informacion en los buckets, no seria uniforme y
+    el resultado no seria el correcto
