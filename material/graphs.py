@@ -95,6 +95,11 @@ Orden topologico tipo BFS:
 
 
 def orden_bfs(grafo):
+    """DOC: https://es.wikipedia.org/wiki/Ordenamiento_topol%C3%B3gico
+    https://es.wikipedia.org/wiki/B%C3%BAsqueda_en_anchura
+    PRE: Recibe un grafo
+    POST: Devuelve un orden topologico de tipo BFS
+    """
     orden = []
     grados_e = grados_entrada(grafo)
     cola = cola.Cola()
@@ -126,6 +131,10 @@ Orden topologico tipo DFS:
 
 
 def orden_dfs(grafo):
+    """DOC: https://es.wikipedia.org/wiki/Ordenamiento_topol%C3%B3gico
+    https://es.wikipedia.org/wiki/B%C3%BAsqueda_en_profundidad
+    PRE: Recibe un grafo
+    POST: devuelve un orden topologico de tipo DFS"""
     visitados = set()
     pila = pila.Pila()
     for v in grafo.obtener_vertices():
@@ -155,6 +164,10 @@ Dijkstra:
 
 
 def dijkstra(grafo, origen):
+    """DOC: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+    PRE: Recibe un grafo y un origen
+    POST: Devuelve los caminos minimos desde el origen a todos los vertices,
+    un diccionario de padres y distancias"""
     dist = {}
     padre = {}
     heap = []
@@ -190,6 +203,10 @@ Bellman-Ford:
 
 
 def bellman_ford(grafo, origen):
+    """DOC: https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+    PRE: Recibe un grafo y un origen
+    POST: Devuelve los caminos minimos desde el origen a todos los vertices,
+    un diccionario de padres y distancias, caso contrario None"""
     dist = {}
     padre = {}
 
@@ -209,7 +226,7 @@ def bellman_ford(grafo, origen):
             break
     # si no hubo cambios en la iteracion, corto
     if not cambio:
-        return padre, dist
+        return None
     # si hubo cambios en la iteracion, verifico si hay ciclos negativos
     for v, w, peso in aristas:
         if dist[v] + peso < dist[w]:
@@ -221,25 +238,22 @@ def bellman_ford(grafo, origen):
 
 '''
 Prim:
-    - Complejidad: O(E log(V))
+    - Complejidad: O(E*log(V))
     - Implementado con un heap de minimos
     - Devuelve un arbol cuya suma de pesos es minima
 '''
 
 
 def prim(grafo):
+    """DOC: https://es.wikipedia.org/wiki/Algoritmo_de_Prim
+    PRE: REcibe un grafo
+    POST: Devuelve un arbol de tendido minimo"""
     v = grafo.vertice_aleatorio()
     visitados = set()
+    arbol = grafo.Grafo()
     heap = []
 
-    visitados.add(v)
-
-    for w in grafo.adyacentes(v):
-        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
-
-    arbol = grafo.Grafo()
-    for v in grafo.obtener_vertices():
-        arbol.agregar_vertice(v)
+    datos_prim(grafo, v, visitados, heap, arbol)
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
@@ -256,24 +270,22 @@ def prim(grafo):
 
 '''
 Kruskal:
-    - Complejidad: O(E log(V))
+    - Complejidad: O(E*log(V))
     - Implementado con un heap de minimos
     - Devuelve un arbol cuya suma de pesos es minima
 '''
 
 
 def kruskal(grafo):
+    """DOC: https://es.wikipedia.org/wiki/Algoritmo_de_Kruskal
+    PRE: REcibe un grafo
+    POST: Devuelve un arbol de tendido minimo"""
     grupos = union.UnionFind(grafo.obtener_vertices())
     arbol = grafo.Grafo()
     heap = []
     visitados = set()
 
-    for v in grafo:
-        for w in grafo.adyacentes(v):
-            if (v, w) not in visitados:
-                heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
-                visitados.add(v, w)
-                visitados.add(w, v)
+    datos_kruskal(grafo, visitados, heap, arbol)
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
@@ -397,3 +409,20 @@ def obtener_aristas(grafo):
         for w in grafo.adyacentes(v):
             aristas.append((v, w, grafo.peso(v, w)))
     return aristas
+
+
+def datos_kruskal(grafo, visitados, heap, arbol):
+    for v in grafo:
+        arbol.agregar_vertice(v)
+        for w in grafo.adyacentes(v):
+            if (v, w) not in visitados:
+                heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
+        visitados.add(v)
+
+
+def datos_prim(grafo, v, visitados, heap, arbol):
+    visitados.add(v)
+    for w in grafo.adyacentes(v):
+        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
+    for v in grafo:
+        arbol.agregar_vertice(v)
