@@ -14,9 +14,9 @@ class Grafo:
         if v not in self.vertices:
             self.vertices[v] = {}
 
-    def vertice_aleratorio(self):
+    def vertice_aleatorio(self):
         '''DOC: Devuelve un vertice aleratorio'''
-        return random.choice(self.vertices.keys())
+        return random.choice(list(self.vertices))
 
     def adyacentes(self, v):
         '''DOC: Devuelve una lista de adyacencia a un vertice

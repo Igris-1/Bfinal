@@ -1,5 +1,6 @@
 from resource import union_find as union, pila, cola
 import heapq
+from resource import grafo as g
 
 
 # RECORRIDOS
@@ -116,7 +117,7 @@ def orden_bfs(grafo):
             if grados_e[w] == 0:
                 cola.encolar(w)
 
-    if len(orden) != len(grafo.obtener_vertices()):
+    if len(orden) != len(grafo):
         return None
     return orden
 
@@ -250,10 +251,14 @@ def prim(grafo):
     POST: Devuelve un arbol de tendido minimo"""
     v = grafo.vertice_aleatorio()
     visitados = set()
-    arbol = grafo.Grafo()
+    arbol = g.Grafo()
     heap = []
 
-    datos_prim(grafo, v, visitados, heap, arbol)
+    visitados.add(v)
+    for w in grafo.adyacentes(v):
+        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
+    for v in grafo:
+        arbol.agregar_vertice(v)
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
@@ -285,7 +290,12 @@ def kruskal(grafo):
     heap = []
     visitados = set()
 
-    datos_kruskal(grafo, visitados, heap, arbol)
+    for v in grafo:
+        arbol.agregar_vertice(v)
+        for w in grafo.adyacentes(v):
+            if (v, w) not in visitados:
+                heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
+        visitados.add(v)
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
@@ -390,7 +400,7 @@ def _cfcs(grafo, v, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_g
 # ALGORITMOS AUXILIARES
 def grados_entrada(grafo):
     grados = {}
-    for v in grafo.obtener_vertices():
+    for v in grafo:
         for w in grafo.adyacentes(v):
             grados[w] = grados.get(w, 0) + 1
     return grados
@@ -409,20 +419,3 @@ def obtener_aristas(grafo):
         for w in grafo.adyacentes(v):
             aristas.append((v, w, grafo.peso(v, w)))
     return aristas
-
-
-def datos_kruskal(grafo, visitados, heap, arbol):
-    for v in grafo:
-        arbol.agregar_vertice(v)
-        for w in grafo.adyacentes(v):
-            if (v, w) not in visitados:
-                heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
-        visitados.add(v)
-
-
-def datos_prim(grafo, v, visitados, heap, arbol):
-    visitados.add(v)
-    for w in grafo.adyacentes(v):
-        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
-    for v in grafo:
-        arbol.agregar_vertice(v)
