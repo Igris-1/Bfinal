@@ -27,6 +27,7 @@
 		.tengo que poder enumerar los datos
 		.rango acotado de elementos
 	-Average: O(n + k)
+		| Siendo n la cantidad de elementos y k el rango acotado de elementos
 	-Estable: yes
 	-In-Place: no
 
@@ -35,6 +36,7 @@
 		.distribucion conocida de los datos
 		.capacidad de distribuir en buckets de similar cantidad de elementos
 	-Average: O(n*log(n/b))
+		| Siendo n la cantidad de elementos y b la cantidad de buckets
 	-Estable: depende
 	-In-Place: no
 
@@ -43,6 +45,7 @@
 		.los elementos tienen varias cifras, o similar
 		.cada cifra se puede ordenar auxiliarmente, de forma lineal para hacer RadixSort linealmente
 	-Average: O(d*(algoritmo aux interno))
+		| Siendo d la cantidad de pasadas del radix y "algo aux interno" el algoritmo auxiliar que se usa para ordenar cada pasada
 	-Estable: yes
 	-In-Place: depende
 
