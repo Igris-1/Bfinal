@@ -94,14 +94,11 @@ func buscar[K comparable, V any](h *hash[K, V], clave K) int {
 }
 
 func pertenece[K comparable, V any](pos int, h *hash[K, V], clave K) (bool, bool) {
-	var pertenece bool
-	var vacio bool
 	if h.campos[pos].estado == _OCUPADO && h.campos[pos].clave == clave {
-		pertenece = true
+		return true, false
 	} else if h.campos[pos].estado == _VACIO {
-		vacio = true
+		return false, true
 	}
-	return pertenece, vacio
 }
 
 func (h hash[K, V]) Cantidad() int { return h.cantidad }
