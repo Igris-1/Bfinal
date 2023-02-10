@@ -3,33 +3,33 @@ import random
 
 class Grafo:
     def __init__(self, dirigido=False):
-        '''DOC: Representa un grafo no dirigido con aristas
+        """DOC: Representa un grafo no dirigido con aristas
         de peso 1 por default, implementado con diccinario
-        de diccionarios'''
+        de diccionarios"""
         self.dirigido = dirigido
         self.vertices = {}
 
     def agregar_vertice(self, v):
-        '''DOC: Agrega un vertice al diccionario de vertices'''
+        """DOC: Agrega un vertice al diccionario de vertices"""
         if v not in self.vertices:
             self.vertices[v] = {}
 
     def vertice_aleatorio(self):
-        '''DOC: Devuelve un vertice aleratorio'''
+        """DOC: Devuelve un vertice aleratorio"""
         return random.choice(list(self.vertices))
 
     def adyacentes(self, v):
-        '''DOC: Devuelve una lista de adyacencia a un vertice
+        """DOC: Devuelve una lista de adyacencia a un vertice
         PRE: Recibe un vertice valido
-        POST: devuelve una lista de adyacencia'''
+        POST: devuelve una lista de adyacencia"""
         return list(self.vertices[v])
 
     def obtener_vertices(self):
-        '''DOC: Devuelve una lista de vertices'''
+        """DOC: Devuelve una lista de vertices"""
         return self.vertices.keys()
 
     def agregar_arista(self, v, w, peso=1):
-        '''DOC: Agrega una arista no dirigida de peso 1 por default'''
+        """DOC: Agrega una arista no dirigida de peso 1 por default"""
         self.vertices[v][w] = peso
         if not self.dirigido:
             self.vertices[w][v] = peso
@@ -39,25 +39,25 @@ class Grafo:
         return w in self.vertices[v]
 
     def peso(self, v, w):
-        '''DOC: Devuelve el peso de la arista de "v" a "w"
+        """DOC: Devuelve el peso de la arista de "v" a "w"
         PRE: Recibe dos vertices validos
-        POST: Devuelve el peso de la arista'''
+        POST: Devuelve el peso de la arista"""
         if self.es_arista(v, w):
             return self.vertices[v][w]
 
     def __iter__(self):
-        '''DOC: Devuelve un iterador de los vertices'''
+        """DOC: Devuelve un iterador de los vertices"""
         return iter(self.vertices)
 
     def __str__(self):
-        '''DOC: Devuelve una representacion en string del grafo'''
+        """DOC: Devuelve una representacion en string del grafo"""
         return str(self.vertices)
 
     def __repr__(self):
         return str(self.vertices)
 
     def __len__(self):
-        '''DOC: Devuelve la cantidad de vertices del grafo'''
+        """DOC: Devuelve la cantidad de vertices del grafo"""
         return len(self.vertices)
 
 
