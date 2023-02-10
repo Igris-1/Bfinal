@@ -1,16 +1,17 @@
-from resource import union_find as union, pila, cola
 import heapq
-from resource import grafo as g
-
+from resources import cola as c
+from resources import pila as p
+from resources import grafo as g
+from resources import union_find as union
 
 # RECORRIDOS
 
-'''
+"""
 Breadth-First Search (BFS):
     - Complejidad: O(V + E)
     - Recorrido radial
     - Es maleable
-'''
+"""
 
 
 def bfs0(grafo):
@@ -22,7 +23,7 @@ def bfs0(grafo):
 
 
 def _bfs0(grafo, v, visitados):
-    cola = cola.Cola()
+    cola = c.Cola()
     cola.encolar(v)
 
     while not cola.esta_vacia():
@@ -37,7 +38,7 @@ def bfs1(grafo, v):
     """DOC: Recorre una sola componente conexa del grafo, desde
     un vertice origen"""
     visitados = {}
-    cola = cola.Cola()
+    cola = c.Cola()
     cola.encolar(v)
 
     while not cola.esta_vacia():
@@ -48,12 +49,12 @@ def bfs1(grafo, v):
         visitados[v] = True
 
 
-'''
+"""
 Depth-First Search (DFS):
     - Complejidad: O(V + E)
     - Recorrido en profundidad
     - Es maleable
-'''
+"""
 
 
 def dfs0(grafo):
@@ -78,21 +79,23 @@ def dfs1(grafo):
     visitados = set()
     v = grafo.vertice_aleatorio()
     visitados.add(v)
+
     for w in grafo.adyacentes(v):
         if w not in visitados:
             visitados.add(w)
             _dfs(grafo, w, visitados)
 
+
 # ORDEN TOPOLOGICO
 
 
-'''
+"""
 Orden topologico tipo BFS:
     - Complejidad: O(V + E)
     - Utiliza una cola como TDA auxiliar
     - Recorrido radial que toma en cuenta los grados de entrada
     - para grafos dirigidos
-'''
+"""
 
 
 def orden_bfs(grafo):
@@ -103,7 +106,7 @@ def orden_bfs(grafo):
     """
     orden = []
     grados_e = grados_entrada(grafo)
-    cola = cola.Cola()
+    cola = c.Cola()
 
     for v in grafo:
         if grados_e[v] == 0:
@@ -122,13 +125,13 @@ def orden_bfs(grafo):
     return orden
 
 
-'''
+"""
 Orden topologico tipo DFS:
     - Complejidad: O(V + E)
     - Utiliza una pila como TDA auxiliar
     - Recorrido en profundidad que toma en cuenta los visitados
     - para grafos dirigidos
-'''
+"""
 
 
 def orden_dfs(grafo):
@@ -137,7 +140,7 @@ def orden_dfs(grafo):
     PRE: Recibe un grafo
     POST: devuelve un orden topologico de tipo DFS"""
     visitados = set()
-    pila = pila.Pila()
+    pila = p.Pila()
     for v in grafo.obtener_vertices():
         if v not in visitados:
             visitados.add(v)
@@ -155,13 +158,13 @@ def _orden_dfs(grafo, v, visitados, pila):
 
 # CAMINOS MINIMOS
 
-'''
+"""
 Dijkstra:
     - Complejidad: O(E*log(V))
     - Implementado con un heap de minimos
     - No sirve para grafos con pesos negativos ya que se genera un ciclo infinito
     - Si el grafo es conexo, se puede usar para encontrar el camino minimo entre todos los pares de vertices
-'''
+"""
 
 
 def dijkstra(grafo, origen):
@@ -184,7 +187,7 @@ def dijkstra(grafo, origen):
         #    return padre, dist
         for w in grafo.adyacentes(v):
             dist_por_v = dist[v] + grafo.peso(v, w)
-            if dist_por_v < dist.get(w, float('inf')):
+            if dist_por_v < dist.get(w, float("inf")):
                 dist[w] = dist_por_v
                 padre[w] = v
                 heapq.heappush(heap, (dist[w], w))
@@ -193,14 +196,14 @@ def dijkstra(grafo, origen):
     return padre, dist
 
 
-'''
+"""
 Bellman-Ford:
     - Complejidad: O(V*E)
     - Solo para grafos dirigidos (sirve en grafos no dirigidos pero en esos casos hay soluciones mas eficientes)
     - Es realmente lento, pero sirve para grafos con pesos negativos
     - Itera V + 1 veces
     - Si se mejora la ultima iteracion quiere decir que hay un ciclo negativo
-'''
+"""
 
 
 def bellman_ford(grafo, origen):
@@ -215,10 +218,10 @@ def bellman_ford(grafo, origen):
     padre[origen] = None
     aristas = obtener_aristas(grafo)  # O(V + E)
 
+    cambio = None
     for _ in range(len(grafo)):  # O(V * E)
-        cambio = None
         for origen, destino, peso in aristas:
-            if dist[origen] + peso < dist.get(destino, float('inf')):
+            if dist[origen] + peso < dist.get(destino, float("inf")):
                 cambio = True
                 padre[destino] = origen
                 dist[destino] = dist[origen] + peso
@@ -237,12 +240,12 @@ def bellman_ford(grafo, origen):
 
 # ARBOL DE TENDIDO MINIMO
 
-'''
+"""
 Prim:
     - Complejidad: O(E*log(V))
     - Implementado con un heap de minimos
     - Devuelve un arbol cuya suma de pesos es minima
-'''
+"""
 
 
 def prim(grafo):
@@ -273,12 +276,12 @@ def prim(grafo):
     return arbol
 
 
-'''
+"""
 Kruskal:
     - Complejidad: O(E*log(V))
     - Implementado con un heap de minimos
     - Devuelve un arbol cuya suma de pesos es minima
-'''
+"""
 
 
 def kruskal(grafo):
@@ -306,19 +309,19 @@ def kruskal(grafo):
     return arbol
 
 
-'''
+"""
 Puntos de articulacion:
     - Complejidad: O(V + E)
     - Devuelve los puntos de articulacion de un grafo
     - Un punto de articulacion es un vertice que, si se elimina, separa el grafo en dos o mas componentes
     - Utiliza un recorrido DFS
-'''
+"""
 
 
 def puntos_articulacion(grafo):
     origen = grafo.obtener_vertices()[0]
     puntos = set()
-    dfs_puntos(grafo, origen, {origen}, {origen: None}, {}, puntos, True)
+    dfs_puntos(grafo, origen, {origen}, {origen: None}, {}, {}, puntos, True)
     return puntos
 
 
@@ -332,8 +335,9 @@ def dfs_puntos(grafo, v, visitados, padre, orden, mas_bajo, puntos, es_raiz):
             orden[w] = orden[v] + 1
             padre[w] = v
             visitados.add(w)
-            dfs_puntos(grafo, w, visitados, padre, orden,
-                       mas_bajo, puntos, es_raiz=False)
+            dfs_puntos(
+                grafo, w, visitados, padre, orden, mas_bajo, puntos, es_raiz=False
+            )
 
             if mas_bajo[w] >= orden[v] and not es_raiz:
                 # No hubo forma de pasar por arriba a este vertice, es punto de articulacion
@@ -351,25 +355,25 @@ def dfs_puntos(grafo, v, visitados, padre, orden, mas_bajo, puntos, es_raiz):
         puntos.add(v)
 
 
-'''
+"""
 Ccomponentes Fuertemente Conexas:
     - Complejidad: O(V + E)
     - Devuelve las componentes fuertemente conexas de un grafo dirigido
-'''
+"""
 
 
 def cfcs(grafo):
     resultado = []
     visitados = set()
-    p = pila.Pila()
+    pila = p.Pila()
     for v in grafo:
         if v not in visitados:
-            _cfcs(grafo, v, visitados, {}, {}, p, set(), resultado, 0)
+            _cfcs(grafo, v, visitados, {}, {}, pila, set(), resultado, 0)
     return resultado
 
 
-def _cfcs(grafo, v, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_global):
-    orden[v] = mas_bajo[v] = contador_global[0]
+def _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global):
+    orden[v] = mb[v] = contador_global[0]
     contador_global[0] += 1
     visitados.add(v)
     pila.apilar(v)
@@ -377,14 +381,23 @@ def _cfcs(grafo, v, visitados, orden, mas_bajo, pila, apilados, cfcs, contador_g
 
     for w in grafo.adyacentes(v):
         if w not in visitados:
-            _cfcs(grafo, w, visitados, orden, mas_bajo,
-                  pila, apilados, cfcs, contador_global)
+            _cfcs(
+                grafo,
+                w,
+                visitados,
+                orden,
+                mb,
+                pila,
+                apilados,
+                cfcs,
+                contador_global,
+            )
         if w in apilados:
             # nos tenemos que fijar que este entre los apilados y que no estamos viendo un vertice visitado
             # en otro dfs hecho antes (no son parte de la misma cfc porque habrian sido visitados en la misma dfs)
-            mas_bajo[v] == min(mas_bajo[v], mas_bajo[w])
+            mb[v] == min(mb[v], mb[w])
 
-    if orden[v] == mas_bajo[v]:
+    if orden[v] == mb[v]:
         # se cumple condicion de cierre de CFC, armo la cfc
         # y saco los elementos de la pila
         nueva_cfc = []
