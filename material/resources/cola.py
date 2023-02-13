@@ -3,18 +3,19 @@ class _Nodo:
         self.dato = dato
         self.prox = prox
 
+
 class Cola:
-    '''Representa a una cola, con operaciones de encolar y 
-       desencolar. El primero en ser encolado es también el primero
-       en ser desencolado.'''
+    """Representa a una cola, con operaciones de encolar y
+    desencolar. El primero en ser encolado es también el primero
+    en ser desencolado."""
 
     def __init__(self):
-        '''Crea una cola vacía'''
+        """Crea una cola vacía"""
         self.frente = None
         self.ultimo = None
 
     def encolar(self, dato):
-        '''Agrega el elemento x como último de la cola.'''
+        """Agrega el elemento x como último de la cola."""
         nodo = _Nodo(dato)
         if self.esta_vacia():
             self.frente = nodo
@@ -23,9 +24,9 @@ class Cola:
         self.ultimo = nodo
 
     def desencolar(self):
-        '''Desencola el primer elemento y devuelve su valor
-           Pre: la cola NO está vacía.
-           Pos: el nuevo frente es el que estaba siguiente al frente anterior'''
+        """Desencola el primer elemento y devuelve su valor
+        Pre: la cola NO está vacía.
+        Pos: el nuevo frente es el que estaba siguiente al frente anterior"""
         if self.esta_vacia():
             raise ValueError("Cola vacía")
         dato = self.frente.dato
@@ -35,12 +36,12 @@ class Cola:
         return dato
 
     def ver_frente(self):
-        '''Devuelve el elemento que está en el frente de la cola.
-           Pre: la cola NO está vacía.'''
+        """Devuelve el elemento que está en el frente de la cola.
+        Pre: la cola NO está vacía."""
         if self.esta_vacia():
             raise ValueError("Cola vacía")
         return self.frente.dato
 
     def esta_vacia(self):
-        '''Devuelve True o False según si la cola está vacía o no'''
+        """Devuelve True o False según si la cola está vacía o no"""
         return self.frente is None
