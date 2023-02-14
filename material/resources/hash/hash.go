@@ -98,6 +98,8 @@ func pertenece[K comparable, V any](pos int, h *hash[K, V], clave K) (bool, bool
 		return true, false
 	} else if h.campos[pos].estado == _VACIO {
 		return false, true
+	} else {
+		return false, false
 	}
 }
 
