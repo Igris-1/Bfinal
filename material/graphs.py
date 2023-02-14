@@ -258,10 +258,10 @@ def prim(grafo):
     heap = []
 
     visitados.add(v)
-    for w in grafo.adyacentes(v):
-        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
     for v in grafo:
         arbol.agregar_vertice(v)
+    for w in grafo.adyacentes(v):
+        heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
@@ -395,7 +395,7 @@ def _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global)
         if w in apilados:
             # nos tenemos que fijar que este entre los apilados y que no estamos viendo un vertice visitado
             # en otro dfs hecho antes (no son parte de la misma cfc porque habrian sido visitados en la misma dfs)
-            mb[v] == min(mb[v], mb[w])
+            mb[v] = min(mb[v], mb[w])
 
     if orden[v] == mb[v]:
         # se cumple condicion de cierre de CFC, armo la cfc
