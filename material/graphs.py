@@ -141,7 +141,7 @@ def orden_dfs(grafo):
     POST: devuelve un orden topologico de tipo DFS"""
     visitados = set()
     pila = p.Pila()
-    for v in grafo.obtener_vertices():
+    for v in grafo:
         if v not in visitados:
             visitados.add(v)
             _orden_dfs(grafo, v, visitados, pila)
@@ -223,8 +223,8 @@ def bellman_ford(grafo, origen):
         for origen, destino, peso in aristas:
             if dist[origen] + peso < dist.get(destino, float("inf")):
                 cambio = True
-                padre[destino] = origen
                 dist[destino] = dist[origen] + peso
+                padre[destino] = origen
         # si no hubo cambios en la iteracion, corto
         if not cambio:
             break
