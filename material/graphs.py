@@ -288,10 +288,10 @@ def kruskal(grafo):
     """DOC: https://es.wikipedia.org/wiki/Algoritmo_de_Kruskal
     PRE: REcibe un grafo
     POST: Devuelve un arbol de tendido minimo"""
-    grupos = union.UnionFind(grafo.obtener_vertices())
-    arbol = grafo.Grafo()
-    heap = []
     visitados = set()
+    arbol = grafo.Grafo()
+    grupos = union.UnionFind(grafo.obtener_vertices())
+    heap = []
 
     for v in grafo:
         arbol.agregar_vertice(v)
