@@ -337,9 +337,8 @@ def puntos_dfs(grafo, v, visitados, padre, orden, mb, puntos, raiz):
             hijos += 1
             puntos_dfs(grafo, w, visitados, padre, orden, mb, puntos, raiz=False)
 
-            if mb[w] >= orden[v] and not raiz:
+            if mb[w] >= orden[v] and not raiz and v not in puntos:
                 # No hubo forma de pasar por arriba a este vertice, es punto de articulacion
-                if v not in puntos:
                     puntos.add(v)
             # Al volver me quedo con que puedo ir tan arriba como mi hijo, si es que me supera
             mb[v] = min(mb[v], orden[w])
