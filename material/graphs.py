@@ -10,7 +10,7 @@ from resources import union_find as union
 Breadth-First Search (BFS):
     - Complejidad: O(V + E)
     - Recorrido radial
-    - Es maleable
+    - Se puede modificar respecto a las necesidades del problema
 """
 
 
@@ -53,7 +53,7 @@ def bfs1(grafo, v):
 Depth-First Search (DFS):
     - Complejidad: O(V + E)
     - Recorrido en profundidad
-    - Es maleable
+    - Se puede modificar respecto a las necesidades del problema
 """
 
 
@@ -318,40 +318,37 @@ Puntos de articulacion:
 """
 
 
-def puntos_articulacion(grafo):
-    origen = grafo.obtener_vertices()[0]
+def puntos_de_articulacion(grafo):
+    v = grafo.vertice_aleatorio()
     puntos = set()
-    dfs_puntos(grafo, origen, {origen}, {origen: None}, {}, {}, puntos, True)
+    puntos_dfs(grafo, v, {v}, {v: None}, {}, {}, puntos, True)
     return puntos
 
 
-def dfs_puntos(grafo, v, visitados, padre, orden, mas_bajo, puntos, es_raiz):
+def puntos_dfs(grafo, v, visitados, padre, orden, mb, puntos, raiz):
     hijos = 0
-    mas_bajo[v] = orden[v]
+    mb[v] = orden[v]
 
-    for w in grafo.adyacentes(v):
+    for w in grafo.adyacenes(v):
         if w not in visitados:
-            hijos += 1
+            visitados.add(w)
             orden[w] = orden[v] + 1
             padre[w] = v
-            visitados.add(w)
-            dfs_puntos(
-                grafo, w, visitados, padre, orden, mas_bajo, puntos, es_raiz=False
-            )
+            hijos += 1
+            puntos_dfs(grafo, w, visitados, padre, orden, mb, puntos, raiz=False)
 
-            if mas_bajo[w] >= orden[v] and not es_raiz:
+            if mb[w] >= orden[v] and not raiz:
                 # No hubo forma de pasar por arriba a este vertice, es punto de articulacion
-                # se podria agregar como condicion "and v not in ptos" (ya que podria darse por mas de una rama)
-                puntos.add(v)
+                # Se podria agregar como condicion "and v not in ptos" (ya que podria darse por mas de una rama)
+                if v not in puntos:
+                    puntos.add(v)
             # Al volver me quedo con que puedo ir tan arriba como mi hijo, si es que me supera
-            mas_bajo[v] = min(mas_bajo[v], orden[w])
-
+            mb[v] = min(mb[v], orden[w])
         elif padre[v] != w:
-            # evitamos considerar la arista con el padre como una de retorno
+            # Evitamos considerar la arista con el padre como una de retorno
             # Si es uno ya visitado, significa que puedo subir (si es que no podia ya ir mas arriba)
-            mas_bajo[v] = min(mas_bajo[v], orden[w])
-
-    if es_raiz and hijos > 1:
+            mb[v] = min(mb[v], orden[w])
+    if raiz and hijos > 1:
         puntos.add(v)
 
 
