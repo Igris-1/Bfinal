@@ -221,7 +221,7 @@ def bellman_ford(grafo, origen):
     cambio = None
     for _ in range(len(grafo)):  # O(V * E)
         for origen, destino, peso in aristas:
-            if dist[origen] + peso < dist.get(destino, float("inf")):
+            if dist.get(origen, float('inf')) + peso < dist.get(destino, float("inf")):
                 cambio = True
                 dist[destino] = dist[origen] + peso
                 padre[destino] = origen
