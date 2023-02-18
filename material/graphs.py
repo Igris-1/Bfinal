@@ -339,7 +339,6 @@ def puntos_dfs(grafo, v, visitados, padre, orden, mb, puntos, raiz):
 
             if mb[w] >= orden[v] and not raiz:
                 # No hubo forma de pasar por arriba a este vertice, es punto de articulacion
-                # Se podria agregar como condicion "and v not in ptos" (ya que podria darse por mas de una rama)
                 if v not in puntos:
                     puntos.add(v)
             # Al volver me quedo con que puedo ir tan arriba como mi hijo, si es que me supera
