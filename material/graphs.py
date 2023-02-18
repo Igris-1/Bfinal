@@ -312,7 +312,7 @@ def kruskal(grafo):
 """
 Puntos de articulacion:
     - Complejidad: O(V + E)
-    - Devuelve los puntos de articulacion de un grafo
+    - Devuelve los puntos de articulacion de un grafo no dirigido
     - Un punto de articulacion es un vertice que, si se elimina, separa el grafo en dos o mas componentes
     - Utiliza un recorrido DFS
 """
@@ -358,11 +358,11 @@ Ccomponentes Fuertemente Conexas:
     - Devuelve las componentes fuertemente conexas de un grafo dirigido
 """
 
-
 def cfcs(grafo):
     resultado = []
     visitados = set()
     pila = p.Pila()
+
     for v in grafo:
         if v not in visitados:
             _cfcs(grafo, v, visitados, {}, {}, pila, set(), resultado, 0)
@@ -370,33 +370,21 @@ def cfcs(grafo):
 
 
 def _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global):
-    orden[v] = mb[v] = contador_global[0]
-    contador_global[0] += 1
+    orden[v] = mb[v] = contador_global
+    contador_global += 1
     visitados.add(v)
     pila.apilar(v)
     apilados.add(v)
 
     for w in grafo.adyacentes(v):
         if w not in visitados:
-            _cfcs(
-                grafo,
-                w,
-                visitados,
-                orden,
-                mb,
-                pila,
-                apilados,
-                cfcs,
-                contador_global,
-            )
-        if w in apilados:
-            # nos tenemos que fijar que este entre los apilados y que no estamos viendo un vertice visitado
-            # en otro dfs hecho antes (no son parte de la misma cfc porque habrian sido visitados en la misma dfs)
-            mb[v] = min(mb[v], mb[w])
-
+            _cfcs(grafo, w, visitados, orden, mb, pila, apilados, cfcs, contador_global)
+            if w in apilados:
+                # nos tenemos que fijar que este entre los apilados y que no estamos viendo un vertice visitado
+                # en otro dfs hecho antes (no son parte de la misma cfc porque habrian sido visitados en la misma dfs)
+                mb[v] = min(mb[v], mb[w])
     if orden[v] == mb[v]:
-        # se cumple condicion de cierre de CFC, armo la cfc
-        # y saco los elementos de la pila
+        # se cumple condicion de cierre de CFC, armo la cfc y saco los elementos de la pila
         nueva_cfc = []
         while True:
             w = pila.desapilar()
