@@ -221,7 +221,7 @@ def bellman_ford(grafo, origen):
     cambio = None
     for _ in range(len(grafo)):  # O(V * E)
         for origen, destino, peso in aristas:
-            if dist.get(origen, float('inf')) + peso < dist.get(destino, float("inf")):
+            if dist.get(origen, float("inf")) + peso < dist.get(destino, float("inf")):
                 cambio = True
                 dist[destino] = dist[origen] + peso
                 padre[destino] = origen
@@ -339,7 +339,7 @@ def puntos_dfs(grafo, v, visitados, padre, orden, mb, puntos, raiz):
 
             if mb[w] >= orden[v] and not raiz and v not in puntos:
                 # No hubo forma de pasar por arriba a este vertice, es punto de articulacion
-                    puntos.add(v)
+                puntos.add(v)
             # Al volver me quedo con que puedo ir tan arriba como mi hijo, si es que me supera
             mb[v] = min(mb[v], orden[w])
         elif padre[v] != w:
@@ -355,6 +355,7 @@ Ccomponentes Fuertemente Conexas:
     - Complejidad: O(V + E)
     - Devuelve las componentes fuertemente conexas de un grafo dirigido
 """
+
 
 def cfcs(grafo):
     resultado = []
