@@ -122,21 +122,3 @@ func HeapSort[T comparable](elementos []T, funcion_cmp func(T, T) int) {
 		elementos[i] = heap.Desencolar()
 	}
 }
-
-// esto es un ejercicio de final
-func (h heap[T]) Diferencia(heap heap[T]) ColaPrioridad[T] {
-	nuevo := CrearHeap(h.cmp)
-	for {
-		if !h.EstaVacia() {
-			elemento := h.Desencolar()
-			for _, v := range heap.datos {
-				if elemento == v {
-					continue
-				}
-			}
-			nuevo.Encolar(elemento)
-			continue
-		}
-		return nuevo
-	}
-}
