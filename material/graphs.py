@@ -320,8 +320,14 @@ Puntos de articulacion:
 
 def puntos_de_articulacion(grafo):
     v = grafo.vertice_aleatorio()
+    visitados = set()
+    padre = {}
+    orden = {}
+    mb = {}
     puntos = set()
-    puntos_dfs(grafo, v, {v}, {v: None}, {}, {}, puntos, True)
+    raiz = True
+    puntos_dfs(grafo, v, visitados, padre, orden, mb, puntos, raiz)
+    # puntos_dfs(grafo, v, {v}, {v: None}, {}, {}, puntos, True)
     return puntos
 
 
@@ -358,14 +364,19 @@ Ccomponentes Fuertemente Conexas:
 
 
 def cfcs(grafo):
-    resultado = []
     visitados = set()
+    orden = {}
+    mb = {}
     pila = p.Pila()
+    apilados = set()
+    cfcs = []
+    contador_global = 0
 
     for v in grafo:
         if v not in visitados:
-            _cfcs(grafo, v, visitados, {}, {}, pila, set(), resultado, 0)
-    return resultado
+            _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global)
+            #_cfcs(grafo, v, visitados, {}, {}, pila, set(), cfcs, contador_global)
+    return cfcs
 
 
 def _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global):
