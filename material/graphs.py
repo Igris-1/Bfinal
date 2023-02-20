@@ -105,8 +105,12 @@ def orden_bfs(grafo):
     POST: Devuelve un orden topologico de tipo BFS
     """
     orden = []
-    grados_e = grados_entrada(grafo)
+    grados_e = {}
     cola = c.Cola()
+
+    for v in grafo:
+        for w in grafo.adyacentes(v):
+            grados_e[w] = grados_e.get(w, 0) + 1
 
     for v in grafo:
         if grados_e[v] == 0:
@@ -139,13 +143,18 @@ def orden_dfs(grafo):
     https://es.wikipedia.org/wiki/B%C3%BAsqueda_en_profundidad
     PRE: Recibe un grafo
     POST: devuelve un orden topologico de tipo DFS"""
+    orden = []
     visitados = set()
     pila = p.Pila()
+
     for v in grafo:
         if v not in visitados:
             visitados.add(v)
             _orden_dfs(grafo, v, visitados, pila)
-    return pila_a_lista(pila)
+
+    while not pila.esta_vacia():
+        orden.append(pila.desapilar())
+    return orden
 
 
 def _orden_dfs(grafo, v, visitados, pila):
@@ -375,7 +384,7 @@ def cfcs(grafo):
     for v in grafo:
         if v not in visitados:
             _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global)
-            #_cfcs(grafo, v, visitados, {}, {}, pila, set(), cfcs, contador_global)
+            # _cfcs(grafo, v, visitados, {}, {}, pila, set(), cfcs, contador_global)
     return cfcs
 
 
@@ -406,21 +415,6 @@ def _cfcs(grafo, v, visitados, orden, mb, pila, apilados, cfcs, contador_global)
 
 
 # ALGORITMOS AUXILIARES
-def grados_entrada(grafo):
-    grados = {}
-    for v in grafo:
-        for w in grafo.adyacentes(v):
-            grados[w] = grados.get(w, 0) + 1
-    return grados
-
-
-def pila_a_lista(pila):
-    lista = []
-    while pila:
-        lista.append(pila.desapilar())
-    return lista
-
-
 def obtener_aristas(grafo):
     aristas = []
     for v in grafo:
