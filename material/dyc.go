@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 // las estrellitas demarcan la dificultad de los ejercicios,
 // 4 y 5 estrellas son ejercicios de parciales / finales
 
@@ -375,3 +377,43 @@ Complejidad: T(n) = 2T(n/2) + O(n^C)
 	- C: 0
 	- logB(A) = log2(2) = 1 > C => O(n^logB(A)) = O(n)
 */
+
+/*Unknow shit*/
+func frecuencias(arr []int, n int) []int {
+	// Inicializar el arreglo de frecuencias a cero
+	freq := make([]int, int(math.Log2(float64(n)))+1)
+
+	// Buscar la posición de la primera ocurrencia de cada número
+	for i := 0; i <= int(math.Log2(float64(n))); i++ {
+		left := 0
+		right := n - 1
+		for left <= right {
+			mid := (left + right) / 2
+			if arr[mid] < i {
+				left = mid + 1
+			} else {
+				right = mid - 1
+			}
+		}
+		firstOccurrence := left
+
+		// Buscar la posición de la última ocurrencia de cada número
+		left = 0
+		right = n - 1
+		for left <= right {
+			mid := (left + right) / 2
+			if arr[mid] <= i {
+				left = mid + 1
+			} else {
+				right = mid - 1
+			}
+		}
+		lastOccurrence := right
+
+		// Calcular la frecuencia del número y almacenarla en el arreglo de frecuencias
+		freq[i] = lastOccurrence - firstOccurrence + 1
+	}
+	return freq
+}
+
+// Complejidad: O(log^2(n)) for god sake
