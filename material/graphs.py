@@ -305,13 +305,14 @@ def kruskal(grafo):
     for v in grafo:
         arbol.agregar_vertice(v)
         for w in grafo.adyacentes(v):
-            if (v, w) not in visitados:
+            if (v, w) not in visitados:  # evitamos repetir aristas
                 heapq.heappush(heap, (grafo.peso(v, w), (v, w)))
-        visitados.add(v)
+                visitados.add((v, w))
+                visitados.add((w, v))
 
     while heap:
         peso, (v, w) = heapq.heappop(heap)
-        if grupos.find(v) == grupos.find(w):  # aca evitamos cerrar un ciclo
+        if grupos.find(v) == grupos.find(w):  # evitamos cerrar un ciclo
             continue
         arbol.agregar_arista(v, w, peso)
         grupos.union(v, w)
