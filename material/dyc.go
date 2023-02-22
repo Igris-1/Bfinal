@@ -4,6 +4,7 @@ import "math"
 
 // las estrellitas demarcan la dificultad de los ejercicios,
 // 4 y 5 estrellas son ejercicios de parciales / finales
+// "Unknow" determina una dificultad, desconocida
 
 /*
 DATOS: D&C Rules
@@ -169,7 +170,7 @@ Complejidad: T(n) = 1T(n/2) + O(n^C)
 */
 
 /*
-17) (★★★★★) Implementar una función (que utilice división y conquista) de orden
+17) (Unknow) Implementar una función (que utilice división y conquista) de orden
 O(n*log(n)) que dado un arreglo de n números enteros devuelva true
 o false según si existe algún elemento que aparezca más de la mitad de las veces.
 Justificar el orden de la solución. Ejemplos:
