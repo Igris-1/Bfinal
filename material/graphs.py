@@ -336,6 +336,9 @@ def puntos_de_articulacion(grafo):
     mb = {}
     puntos = set()
     raiz = True
+
+    padre[v] = None
+    orden[v] = 0
     puntos_dfs(grafo, v, visitados, padre, orden, mb, puntos, raiz)
     # puntos_dfs(grafo, v, {v}, {v: None}, {}, {}, puntos, True)
     return puntos
