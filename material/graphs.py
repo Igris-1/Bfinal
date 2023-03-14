@@ -4,7 +4,7 @@ from resources import pila as p
 from resources import grafo as g
 from resources import union_find as union
 
-# RECORRIDOS
+# RECORRIDOS cambios
 
 """
 Breadth-First Search (BFS):
